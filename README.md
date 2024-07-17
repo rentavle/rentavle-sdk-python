@@ -9,6 +9,7 @@ Welcome to the Rentavle SDK for Python! This guide covers everything you need to
 - Getting Started
 - Example code for all functions
 - Understanding the Cursor Parameter
+- Terms Explanation
 
 ## Installation
 
@@ -145,3 +146,13 @@ all_nfts = get_all_nfts_by_contract(sdk, contract_address)
 print(f"Total NFTs retrieved: {len(all_nfts)}")
 ```
 This approach allows you to efficiently retrieve all NFTs for a contract, regardless of the total number, by making multiple smaller requests and following the cursor pagination.
+
+## Terms Explanation
+
+1. rentavleItems: These are items that are rented or borrowed through Rentavle. When you fetch a list of NFTs for a specific contract, rentavleItems will include NFTs that are currently being rented or are available for rent through the Rentavle platform.
+
+2. havahItems: These are items that exist on the Havah chain. When fetching a list of NFTs for a specific contract, havahItems will return all NFTs on the Havah chain for that contract, regardless of whether they are involved in Rentavle transactions or not.
+
+For example, when you use the `getListOfNFTsByContract` function:
+- rentavleItems will contain NFTs that are part of the Rentavle ecosystem (rented, available for rent, etc.)
+- havahItems will contain all NFTs for that contract on the Havah chain, providing a complete view of the contract's NFTs.
