@@ -8,6 +8,7 @@ Welcome to the Rentavle SDK for Python! This guide covers everything you need to
 - Configuration
 - Getting Started
 - Example code for all functions
+- Understanding the Cursor Parameter
 
 ## Installation
 
