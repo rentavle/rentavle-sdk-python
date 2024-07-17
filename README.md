@@ -99,3 +99,48 @@ def example_usage():
 
 example_usage()
 ```
+
+
+## Understanding the Cursor Parameter
+
+The `cursor` parameter is used for pagination in the API responses. It helps in retrieving large sets of data in smaller, manageable chunks.
+
+### How it works:
+
+1. When you make an initial request, leave the cursor empty or omit it.
+2. The API response will include a `cursor` value if there are more results available.
+3. To fetch the next set of results, use this `cursor` value in your subsequent request.
+4. Repeat this process until you receive an empty `cursor`, indicating you've reached the end of the data set.
+
+### Example usage with cursor pagination:
+
+```python
+def get_all_nfts_by_contract(sdk, contract_address, size=10):
+    all_nfts = []
+    cursor = ""
+
+    while True:
+        # Make the API call
+        response = sdk.get_list_of_nfts_by_contract(contract_address, size=size, cursor=cursor)
+        
+        # Extract the NFTs from the response
+        nfts = response.get('chainItems', []) + response.get('rentavleItems', [])
+        all_nfts.extend(nfts)
+
+        # Get the new cursor
+        cursor = response.get('cursor', '')
+
+        # If there's no cursor, we've reached the end of the data
+        if not cursor:
+            break
+
+    return all_nfts
+
+# Usage
+sdk = RentavleSDK(api_endpoint="https://www.rentavle.com/bapi", chain_id="0x100")
+contract_address = 'cxfdbfc5b5b330df8481e17f6872d985ade4986ee8'
+
+all_nfts = get_all_nfts_by_contract(sdk, contract_address)
+print(f"Total NFTs retrieved: {len(all_nfts)}")
+```
+This approach allows you to efficiently retrieve all NFTs for a contract, regardless of the total number, by making multiple smaller requests and following the cursor pagination.
